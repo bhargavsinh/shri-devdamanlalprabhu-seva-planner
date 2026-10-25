@@ -1,23 +1,21 @@
 # SDSP — Shri Devdaman Seva Planner
 
-**Version 1.0 (Foundation + Local DBMS + Nitya Seva Register)**
+**Version 1.0** — Local-first Progressive Web App for Nitya Seva of Shri Devdamanlal Prabhu.
 
-Private, local-first Progressive Web App for managing Nitya Seva records of Shri Devdamanlal Prabhu.
+## Implemented (Phases 1–6 + 8)
 
-Architecture principle: local-first storage, privacy by design, explicit backups (later phases), and evidence-based release acceptance.
+- React + TypeScript + Tailwind + Vite + PWA shell
+- IndexedDB / Dexie with versioned schema + Zod validation
+- Dashboard + Nitya Seva Register (status + notes per day)
+- Calendar (month view) + manual Gujarati Panchang entry with verification flag
+- File Library (import PDF/images/docs as Blobs, SHA-256 checksum, download, delete)
+- Seva Materials Inventory (Vastra / Shringar / Materials)
+- Local PIN lock screen (UI gate only — data is **not** encrypted)
+- Settings page
 
-## Current scope (Phases 1–3)
+## Explicitly deferred (Phase 7)
 
-- React + TypeScript + Tailwind CSS + Vite
-- PWA shell (manifest + service worker via vite-plugin-pwa)
-- IndexedDB via Dexie.js with versioned schema
-- Zod validation on write paths
-- Dashboard with today’s progress
-- Nitya Seva Register (CRUD-style status + notes per day)
-- Default seva types seeded on first load
-- GitHub Pages base path configured
-
-**Not yet in this release:** Calendar/Panchang, File Library, Inventory, full Backup/Restore, Reminders, Auth lock, Supabase.
+Full Backup / Restore with integrity checks and production-ready Reminders are **not** claimed in this release. Placeholder pages exist so routes do not break.
 
 ## Quick start
 
@@ -28,26 +26,24 @@ npm install
 npm run dev
 ```
 
-Open the local URL shown by Vite.
-
-## Build for GitHub Pages
+## GitHub Pages
 
 ```bash
 npm run build
 ```
 
-Deploy the `dist/` folder to GitHub Pages (Settings → Pages → Deploy from branch / gh-pages or Actions).
+Base path is set to `/shri-devdamanlalprabhu-seva-planner/`.
 
-Base path is already set to `/shri-devdamanlalprabhu-seva-planner/`.
+## Important
 
-## Important storage note
+IndexedDB is browser-managed storage. Clearing site data or device failure can lose records. **Local storage is not a backup.** Complete Phase 7 before relying on this for irreplaceable Seva history.
 
-IndexedDB is browser-managed. Quotas, clearing site data, or device failure can lose data. **Local storage is not a backup.** A proper export/import flow will be added in a later phase. Until then, treat this as a personal tool on a trusted device.
+Panchang entries are user-sourced. Do not treat unverified Tithi as authoritative.
 
 ## CLAUDE.md
 
-All contributors and agents must follow the four rules in `CLAUDE.md`.
+All changes must follow the four rules in `CLAUDE.md`.
 
 ## Status
 
-Architecture and Phase 1–3 implementation only. No claim is made that later blueprint features are present or tested.
+Usable local-first V1 for daily Seva, calendar, files, and inventory. Phase 7 (Backup/Reminders) remains open.
