@@ -6,6 +6,7 @@ import {
   listSevaTypes,
 } from '../../db/repositories/sevaRepository'
 import type { SevaRecord, SevaType } from '../../db/schema'
+import { InstallBanner } from '../../components/InstallBanner'
 
 export function Dashboard() {
   const [dateKey, setDateKey] = useState('')
@@ -44,6 +45,7 @@ export function Dashboard() {
 
   return (
     <div className="space-y-6">
+      <InstallBanner />
       <section>
         <h2 className="text-xl font-semibold text-slate-100">Dashboard</h2>
         <p className="text-sm text-slate-400 mt-1">
