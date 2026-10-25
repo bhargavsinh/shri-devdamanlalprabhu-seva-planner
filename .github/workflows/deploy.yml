@@ -1,4 +1,4 @@
-name: Deploy SDSP to GitHub Pages
+name: Deploy static SDSP to GitHub Pages
 
 on:
   push:
@@ -15,36 +15,29 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          cache: npm
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Build
-        run: npm run build
-
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: dist
-
   deploy:
-    needs: build
-    runs-on: ubuntu-latest
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+      - name: Decode PNG icons from b64
+        run: |
+          mkdir -p icons
+          for f in icon-192.png icon-512.png apple-touch-icon.png; do
+            if [ -f "icons/$f.b64" ]; then
+              base64 -d "icons/$f.b64" > "icons/$f"
+              echo "decoded $f"
+            fi
+          done
+          ls -la icons/ || true
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
