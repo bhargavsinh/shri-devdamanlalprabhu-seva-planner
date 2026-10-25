@@ -1,10 +1,11 @@
 {
   "name": "shri-devdamanlalprabhu-seva-planner",
   "private": true,
-  "version": "1.0.0",
+  "version": "1.0.1",
   "type": "module",
   "description": "SDSP - Shri Devdaman Seva Planner: Privacy-first local-first PWA for Nitya Seva records",
   "scripts": {
+    "prebuild": "node scripts/generate-icons.mjs",
     "dev": "vite",
     "build": "tsc -b && vite build",
     "preview": "vite preview",
