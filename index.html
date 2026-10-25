@@ -9,7 +9,10 @@
     <meta name="theme-color" content="#0f172a" media="(prefers-color-scheme: dark)" />
     <meta name="theme-color" content="#0f172a" />
     <meta name="color-scheme" content="dark" />
-    <meta name="description" content="Shri Devdaman Seva Planner — private local-first Nitya Seva register" />
+    <meta
+      name="description"
+      content="Shri Devdaman Seva Planner — private local-first Nitya Seva register"
+    />
     <meta name="application-name" content="SDSP" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
@@ -21,13 +24,224 @@
     <link rel="manifest" href="manifest.webmanifest" />
     <title>SDSP · Shri Devdaman Seva Planner</title>
     <style>
-      html, body, #root { height: 100%; margin: 0; background: #0f172a; color: #f1f5f9; }
-      /* Prevent white flash before React loads */
-      body { font-family: system-ui, -apple-system, sans-serif; }
+      html,
+      body,
+      #root {
+        height: 100%;
+        margin: 0;
+        background: #0f172a;
+        color: #f1f5f9;
+      }
+      body {
+        font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      /* ── PWA Install section (index.html) ── */
+      #pwa-install-section {
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 9999;
+        padding: 12px 12px calc(12px + env(safe-area-inset-bottom, 0px));
+        background: linear-gradient(180deg, transparent, #0f172a 18%);
+        pointer-events: none;
+      }
+      #pwa-install-section .pwa-card {
+        pointer-events: auto;
+        max-width: 28rem;
+        margin: 0 auto;
+        border-radius: 1rem;
+        border: 1px solid rgba(194, 65, 12, 0.45);
+        background: #1e293b;
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.45);
+        padding: 14px 14px 12px;
+      }
+      #pwa-install-section h2 {
+        margin: 0;
+        font-size: 1rem;
+        color: #fdba74;
+        font-weight: 600;
+      }
+      #pwa-install-section p {
+        margin: 6px 0 0;
+        font-size: 0.8rem;
+        color: #94a3b8;
+        line-height: 1.4;
+      }
+      #pwa-install-section ol {
+        margin: 10px 0 0;
+        padding-left: 1.15rem;
+        font-size: 0.78rem;
+        color: #cbd5e1;
+        line-height: 1.45;
+      }
+      #pwa-install-section li {
+        margin-bottom: 4px;
+      }
+      #pwa-install-section .pwa-actions {
+        display: flex;
+        gap: 8px;
+        margin-top: 12px;
+        align-items: center;
+      }
+      #pwa-install-btn {
+        flex: 1;
+        border: 0;
+        border-radius: 0.75rem;
+        background: #c2410c;
+        color: #fff;
+        font-weight: 600;
+        font-size: 0.9rem;
+        padding: 12px 14px;
+        min-height: 44px;
+        cursor: pointer;
+      }
+      #pwa-install-btn:disabled {
+        opacity: 0.55;
+        cursor: not-allowed;
+      }
+      #pwa-install-btn:not(:disabled):active {
+        background: #ea580c;
+      }
+      #pwa-dismiss-btn {
+        border: 1px solid #475569;
+        border-radius: 0.75rem;
+        background: transparent;
+        color: #94a3b8;
+        font-size: 0.8rem;
+        padding: 10px 12px;
+        min-height: 44px;
+        cursor: pointer;
+      }
+      #pwa-install-section[hidden] {
+        display: none !important;
+      }
+      #pwa-status {
+        margin-top: 8px;
+        font-size: 0.72rem;
+        color: #64748b;
+      }
     </style>
   </head>
   <body>
+    <!-- PWA Install Section — works even before React boots -->
+    <section id="pwa-install-section" aria-label="Install SDSP as app">
+      <div class="pwa-card">
+        <h2>📱 SDSP Home Screen પર Install કરો</h2>
+        <p>
+          Private local-first Seva planner — phone પર app જેવું ખુલશે, offline પણ ચાલશે.
+        </p>
+
+        <ol>
+          <li>
+            <strong>Android (Chrome):</strong> નીચે <em>Install App</em> દબાવો — અથવા
+            Chrome ⋮ → <em>Install app</em> / <em>Add to Home screen</em>
+          </li>
+          <li>
+            <strong>iPhone (Safari):</strong> Share → <em>Add to Home Screen</em> → Add
+          </li>
+        </ol>
+
+        <div class="pwa-actions">
+          <button type="button" id="pwa-install-btn" disabled>
+            Install App
+          </button>
+          <button type="button" id="pwa-dismiss-btn">પછી</button>
+        </div>
+        <p id="pwa-status">Chrome માં થોડી સેકન્ડ રાહ જુઓ… Install તૈયાર થશે.</p>
+      </div>
+    </section>
+
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+
+    <script>
+      (function () {
+        var section = document.getElementById('pwa-install-section')
+        var btn = document.getElementById('pwa-install-btn')
+        var dismiss = document.getElementById('pwa-dismiss-btn')
+        var status = document.getElementById('pwa-status')
+        var deferred = null
+        var KEY = 'sdsp-pwa-install-dismissed'
+
+        function isStandalone() {
+          return (
+            window.matchMedia('(display-mode: standalone)').matches ||
+            window.navigator.standalone === true
+          )
+        }
+
+        function hide() {
+          if (section) section.hidden = true
+        }
+
+        if (isStandalone()) {
+          hide()
+          return
+        }
+        if (localStorage.getItem(KEY) === '1') {
+          hide()
+          return
+        }
+
+        window.addEventListener('beforeinstallprompt', function (e) {
+          e.preventDefault()
+          deferred = e
+          if (btn) {
+            btn.disabled = false
+            btn.textContent = 'Install App'
+          }
+          if (status) {
+            status.textContent = 'Install તૈયાર છે — નીચે બટન દબાવો.'
+            status.style.color = '#86efac'
+          }
+        })
+
+        window.addEventListener('appinstalled', function () {
+          hide()
+          deferred = null
+        })
+
+        if (btn) {
+          btn.addEventListener('click', function () {
+            if (!deferred) {
+              if (status) {
+                status.textContent =
+                  'આ browser Install prompt આપતું નથી. Chrome ⋮ → Install app વાપરો.'
+                status.style.color = '#fcd34d'
+              }
+              return
+            }
+            deferred.prompt()
+            deferred.userChoice.then(function (choice) {
+              deferred = null
+              if (choice && choice.outcome === 'accepted') hide()
+              else if (status) {
+                status.textContent = 'Install રદ થયું. પછીથી ફરી try કરી શકો.'
+                status.style.color = '#94a3b8'
+              }
+            })
+          })
+        }
+
+        if (dismiss) {
+          dismiss.addEventListener('click', function () {
+            try {
+              localStorage.setItem(KEY, '1')
+            } catch (e) {}
+            hide()
+          })
+        }
+
+        // iPhone hint
+        var ua = navigator.userAgent || ''
+        if (/iPhone|iPad|iPod/i.test(ua) && status) {
+          status.textContent =
+            'iPhone: Safari Share બટન → Add to Home Screen'
+        }
+      })()
+    </script>
   </body>
 </html>
