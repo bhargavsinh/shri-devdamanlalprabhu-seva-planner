@@ -6,7 +6,6 @@
       name="viewport"
       content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1"
     />
-    <meta name="theme-color" content="#0f172a" media="(prefers-color-scheme: dark)" />
     <meta name="theme-color" content="#0f172a" />
     <meta name="color-scheme" content="dark" />
     <meta
@@ -18,147 +17,136 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="apple-mobile-web-app-title" content="SDSP" />
     <meta name="mobile-web-app-capable" content="yes" />
-    <meta name="format-detection" content="telephone=no" />
-    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
-    <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
-    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+    <link rel="apple-touch-icon" href="./icons/apple-touch-icon.png" />
+    <link rel="manifest" href="./manifest.webmanifest" />
+    <link rel="stylesheet" href="./styles.css" />
     <title>SDSP · Shri Devdaman Seva Planner</title>
-    <style>
-      html,
-      body,
-      #root {
-        height: 100%;
-        margin: 0;
-        background: #0f172a;
-        color: #f1f5f9;
-      }
-      body {
-        font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-        -webkit-tap-highlight-color: transparent;
-      }
-
-      /* ── PWA Install section (index.html) ── */
-      #pwa-install-section {
-        position: fixed;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        z-index: 9999;
-        padding: 12px 12px calc(12px + env(safe-area-inset-bottom, 0px));
-        background: linear-gradient(180deg, transparent, #0f172a 18%);
-        pointer-events: none;
-      }
-      #pwa-install-section .pwa-card {
-        pointer-events: auto;
-        max-width: 28rem;
-        margin: 0 auto;
-        border-radius: 1rem;
-        border: 1px solid rgba(194, 65, 12, 0.45);
-        background: #1e293b;
-        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.45);
-        padding: 14px 14px 12px;
-      }
-      #pwa-install-section h2 {
-        margin: 0;
-        font-size: 1rem;
-        color: #fdba74;
-        font-weight: 600;
-      }
-      #pwa-install-section p {
-        margin: 6px 0 0;
-        font-size: 0.8rem;
-        color: #94a3b8;
-        line-height: 1.4;
-      }
-      #pwa-install-section ol {
-        margin: 10px 0 0;
-        padding-left: 1.15rem;
-        font-size: 0.78rem;
-        color: #cbd5e1;
-        line-height: 1.45;
-      }
-      #pwa-install-section li {
-        margin-bottom: 4px;
-      }
-      #pwa-install-section .pwa-actions {
-        display: flex;
-        gap: 8px;
-        margin-top: 12px;
-        align-items: center;
-      }
-      #pwa-install-btn {
-        flex: 1;
-        border: 0;
-        border-radius: 0.75rem;
-        background: #c2410c;
-        color: #fff;
-        font-weight: 600;
-        font-size: 0.9rem;
-        padding: 12px 14px;
-        min-height: 44px;
-        cursor: pointer;
-      }
-      #pwa-install-btn:disabled {
-        opacity: 0.55;
-        cursor: not-allowed;
-      }
-      #pwa-install-btn:not(:disabled):active {
-        background: #ea580c;
-      }
-      #pwa-dismiss-btn {
-        border: 1px solid #475569;
-        border-radius: 0.75rem;
-        background: transparent;
-        color: #94a3b8;
-        font-size: 0.8rem;
-        padding: 10px 12px;
-        min-height: 44px;
-        cursor: pointer;
-      }
-      #pwa-install-section[hidden] {
-        display: none !important;
-      }
-      #pwa-status {
-        margin-top: 8px;
-        font-size: 0.72rem;
-        color: #64748b;
-      }
-    </style>
   </head>
   <body>
-    <!-- PWA Install Section — works even before React boots -->
+    <div class="app">
+      <header class="header">
+        <div class="logo">S</div>
+        <div>
+          <h1>SDSP</h1>
+          <p>Shri Devdaman Seva Planner</p>
+        </div>
+      </header>
+
+      <main class="main">
+        <p id="boot-error" class="card" hidden style="border-color:#7f1d1d;color:#fecaca"></p>
+
+        <section id="page-home" class="page active">
+          <h2>Dashboard</h2>
+          <p class="sub">Today • <span id="home-date">…</span></p>
+
+          <div class="card">
+            <div class="progress-row">
+              <div>
+                <div class="muted">Nitya Seva progress</div>
+                <div class="big" id="home-count">0 / 0</div>
+              </div>
+              <div id="home-pct">0%</div>
+            </div>
+            <div class="bar"><span id="home-bar"></span></div>
+          </div>
+
+          <button type="button" class="btn" id="go-seva">Open Nitya Seva Register</button>
+
+          <div class="card" style="margin-top: 0.85rem">
+            <div class="muted" style="margin-bottom: 0.35rem">Quick status</div>
+            <ul class="list" id="home-list"></ul>
+          </div>
+        </section>
+
+        <section id="page-seva" class="page">
+          <h2>Nitya Seva Register</h2>
+          <p class="sub">Date • <span id="seva-date-label">…</span></p>
+          <div class="card" id="seva-list"></div>
+        </section>
+
+        <section id="page-calendar" class="page">
+          <h2>Calendar</h2>
+          <p class="sub">તારીખ પસંદ કરી Seva ખોલો</p>
+          <div class="card">
+            <div class="row" style="margin-bottom: 0.75rem">
+              <button type="button" class="btn secondary" id="cal-prev">‹</button>
+              <div id="cal-title" style="text-align: center; font-weight: 600"></div>
+              <button type="button" class="btn secondary" id="cal-next">›</button>
+            </div>
+            <div class="cal-grid" id="cal-grid"></div>
+          </div>
+        </section>
+
+        <section id="page-settings" class="page">
+          <h2>Settings</h2>
+          <p class="sub">Local-only · data stays on this device</p>
+
+          <div class="card">
+            <label class="row" style="justify-content: space-between; cursor: pointer">
+              <span>PIN lock</span>
+              <input type="checkbox" id="lock-enabled" />
+            </label>
+            <p class="muted" style="margin-top: 0.5rem; font-size: 0.75rem">
+              UI gate only — not encryption. Clearing browser data removes records.
+            </p>
+          </div>
+
+          <div class="card">
+            <button type="button" class="btn secondary" id="export-json">
+              Export today’s JSON
+            </button>
+          </div>
+
+          <div class="card">
+            <p class="muted" style="font-size: 0.8rem; margin: 0">
+              SDSP V1 · HTML/CSS/JS · IndexedDB · PWA
+            </p>
+          </div>
+        </section>
+      </main>
+
+      <nav class="bottom-nav" aria-label="Main">
+        <button type="button" data-page="home" class="active">
+          <span class="ico">⌂</span>Home
+        </button>
+        <button type="button" data-page="seva">
+          <span class="ico">ॐ</span>Seva
+        </button>
+        <button type="button" data-page="calendar">
+          <span class="ico">▦</span>Calendar
+        </button>
+        <button type="button" data-page="settings">
+          <span class="ico">⚙</span>Settings
+        </button>
+      </nav>
+    </div>
+
     <section id="pwa-install-section" aria-label="Install SDSP as app">
       <div class="pwa-card">
         <h2>📱 SDSP Home Screen પર Install કરો</h2>
         <p>
           Private local-first Seva planner — phone પર app જેવું ખુલશે, offline પણ ચાલશે.
         </p>
-
         <ol>
           <li>
-            <strong>Android (Chrome):</strong> નીચે <em>Install App</em> દબાવો — અથવા
-            Chrome ⋮ → <em>Install app</em> / <em>Add to Home screen</em>
+            <strong>Android (Chrome):</strong> નીચે <em>Install App</em> — અથવા Chrome ⋮ →
+            Install app
           </li>
           <li>
-            <strong>iPhone (Safari):</strong> Share → <em>Add to Home Screen</em> → Add
+            <strong>iPhone (Safari):</strong> Share → Add to Home Screen
           </li>
         </ol>
-
         <div class="pwa-actions">
-          <button type="button" id="pwa-install-btn" disabled>
-            Install App
-          </button>
+          <button type="button" id="pwa-install-btn" disabled>Install App</button>
           <button type="button" id="pwa-dismiss-btn">પછી</button>
         </div>
         <p id="pwa-status">Chrome માં થોડી સેકન્ડ રાહ જુઓ… Install તૈયાર થશે.</p>
       </div>
     </section>
 
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-
     <script>
-      (function () {
+      ;(function () {
         var section = document.getElementById('pwa-install-section')
         var btn = document.getElementById('pwa-install-btn')
         var dismiss = document.getElementById('pwa-dismiss-btn')
@@ -172,76 +160,46 @@
             window.navigator.standalone === true
           )
         }
-
         function hide() {
           if (section) section.hidden = true
         }
-
-        if (isStandalone()) {
+        if (isStandalone() || localStorage.getItem(KEY) === '1') {
           hide()
           return
         }
-        if (localStorage.getItem(KEY) === '1') {
-          hide()
-          return
-        }
-
         window.addEventListener('beforeinstallprompt', function (e) {
           e.preventDefault()
           deferred = e
-          if (btn) {
-            btn.disabled = false
-            btn.textContent = 'Install App'
-          }
-          if (status) {
-            status.textContent = 'Install તૈયાર છે — નીચે બટન દબાવો.'
-            status.style.color = '#86efac'
-          }
+          btn.disabled = false
+          status.textContent = 'Install તૈયાર છે — બટન દબાવો.'
+          status.style.color = '#86efac'
         })
-
-        window.addEventListener('appinstalled', function () {
+        window.addEventListener('appinstalled', hide)
+        btn.addEventListener('click', function () {
+          if (!deferred) {
+            status.textContent =
+              'Prompt નથી. Chrome ⋮ → Install app / Add to Home screen વાપરો.'
+            status.style.color = '#fcd34d'
+            return
+          }
+          deferred.prompt()
+          deferred.userChoice.then(function (c) {
+            deferred = null
+            if (c && c.outcome === 'accepted') hide()
+          })
+        })
+        dismiss.addEventListener('click', function () {
+          try {
+            localStorage.setItem(KEY, '1')
+          } catch (e) {}
           hide()
-          deferred = null
         })
-
-        if (btn) {
-          btn.addEventListener('click', function () {
-            if (!deferred) {
-              if (status) {
-                status.textContent =
-                  'આ browser Install prompt આપતું નથી. Chrome ⋮ → Install app વાપરો.'
-                status.style.color = '#fcd34d'
-              }
-              return
-            }
-            deferred.prompt()
-            deferred.userChoice.then(function (choice) {
-              deferred = null
-              if (choice && choice.outcome === 'accepted') hide()
-              else if (status) {
-                status.textContent = 'Install રદ થયું. પછીથી ફરી try કરી શકો.'
-                status.style.color = '#94a3b8'
-              }
-            })
-          })
-        }
-
-        if (dismiss) {
-          dismiss.addEventListener('click', function () {
-            try {
-              localStorage.setItem(KEY, '1')
-            } catch (e) {}
-            hide()
-          })
-        }
-
-        // iPhone hint
-        var ua = navigator.userAgent || ''
-        if (/iPhone|iPad|iPod/i.test(ua) && status) {
-          status.textContent =
-            'iPhone: Safari Share બટન → Add to Home Screen'
+        if (/iPhone|iPad|iPod/i.test(navigator.userAgent || '')) {
+          status.textContent = 'iPhone: Safari Share → Add to Home Screen'
         }
       })()
     </script>
+    <script src="./js/db.js"></script>
+    <script src="./js/app.js"></script>
   </body>
 </html>
