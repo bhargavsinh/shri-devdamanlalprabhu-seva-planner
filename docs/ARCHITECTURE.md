@@ -1,32 +1,35 @@
-# SDSP Architecture (V1 — Phases 1–3)
+# SDSP Architecture (V1)
 
 ## Stack
 
-| Layer          | Technology                          |
-|----------------|-------------------------------------|
-| UI             | React 19 + TypeScript               |
-| Styling        | Tailwind CSS v4                     |
-| Routing        | React Router                        |
-| Local DB       | IndexedDB via Dexie.js              |
-| Validation     | Zod                                 |
-| PWA            | vite-plugin-pwa                     |
-| Hosting target | GitHub Pages (static)               |
+| Layer | Technology |
+|-------|------------|
+| UI | React 19 + TypeScript |
+| Styling | Tailwind CSS v4 |
+| Routing | React Router |
+| Local DB | IndexedDB via Dexie.js (versioned) |
+| Validation | Zod |
+| PWA | vite-plugin-pwa |
+| Hosting | GitHub Pages |
 
 ## Source of truth
 
-Local IndexedDB database (`sdsp_v1`) is the sole source of truth in V1.
+Local IndexedDB (`sdsp_v1`) is the sole source of truth.
 
-## Data model (implemented)
+## Implemented modules
 
-- `seva_types` — id, name, category, sequence, is_active, timestamps
-- `seva_records` — id, date_key, seva_type_id, status, notes, timestamps, revision
-- `settings` — reserved for later
+- Dashboard + Nitya Seva Register
+- Calendar + manual Gujarati Panchang entry
+- File Library (Blob + SHA-256 checksum)
+- Seva Materials Inventory (Vastra / Shringar / Materials)
+- Local PIN lock (UI gate only — not encryption)
 
-## Routes
+## Explicitly deferred
 
-- `/` — Dashboard (today’s progress)
-- `/seva` — Nitya Seva Register (date picker + status + notes)
+- Phase 7: full Backup/Restore with integrity + Reminders
+- Automated Panchang engine
+- Optional Supabase sync
 
-## Next phases (not implemented)
+## Data model
 
-See the Technical Blueprint PDF for Calendar, Panchang, File Library, Inventory, Backup/Restore, Reminders, Security, and optional Supabase.
+See `src/db/schema.ts` for tables and version 2 migration.
