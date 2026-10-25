@@ -1,8 +1,9 @@
 <!doctype html>
-<html lang="en">
+<html lang="gu">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#0f172a" />
     <title>SDSP Offline</title>
     <style>
       body {
@@ -15,14 +16,17 @@
         min-height: 100vh;
         margin: 0;
         text-align: center;
-        padding: 1rem;
+        padding: 1.5rem;
+        padding-bottom: env(safe-area-inset-bottom, 1rem);
       }
+      h1 { color: #f97316; margin: 0 0 0.5rem; }
+      p { color: #94a3b8; font-size: 0.9rem; }
     </style>
   </head>
   <body>
     <div>
       <h1>SDSP</h1>
-      <p>You are offline. The app shell will load when connectivity returns or from cache.</p>
+      <p>You are offline. Open the installed app or reconnect to continue.</p>
     </div>
   </body>
 </html>
