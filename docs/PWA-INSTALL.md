@@ -1,26 +1,33 @@
-# SDSP — Install as PWA (Phone)
+# SDSP — Install on Android (and iPhone)
 
-## Android (Chrome)
+## Android Chrome (recommended)
 
-1. Open https://bhargavsinh.github.io/shri-devdamanlalprabhu-seva-planner/
-2. Tap the **menu (⋮)** → **Install app** or **Add to Home screen**
-3. Confirm. The app opens full-screen without browser chrome.
+1. Open:
+   https://bhargavsinh.github.io/shri-devdamanlalprabhu-seva-planner/
+2. Wait a few seconds for the service worker to register.
+3. Either:
+   - Tap the **Install** banner on the Home screen, **or**
+   - Chrome menu **⋮ → Install app** / **Add to Home screen**
+4. Confirm. SDSP opens full-screen like a native app.
 
-## iPhone (Safari)
+### If Install does not appear
 
-1. Open the same URL in Safari
-2. Tap **Share** → **Add to Home Screen**
-3. Name it **SDSP** → Add
+- Use **Chrome** (not in-app browsers like Instagram/Facebook).
+- Site must be HTTPS (GitHub Pages is HTTPS).
+- Visit the site once while online so the service worker can install.
+- Check: Chrome ⋮ → **Add to Home screen** is always available even without the banner.
 
-## Requirements for install prompt
+## iPhone Safari
 
-- Served over HTTPS (GitHub Pages provides this)
-- Valid Web App Manifest
-- Service worker registered
-- Icons present (generated on build)
+1. Open the same URL in **Safari**
+2. Share → **Add to Home Screen** → Add
 
-## After install
+## What install gives you
 
-- Works offline for cached shell + your local IndexedDB data
-- Data stays on the device (local-first)
-- Use Settings to enable optional PIN lock (UI only, not encryption)
+- Home screen icon
+- Standalone window (no browser URL bar)
+- Offline shell + local IndexedDB Seva data on this device
+
+## Note
+
+Data stays on the phone. Clearing Chrome site data will erase local records until Phase 7 backup is available.
